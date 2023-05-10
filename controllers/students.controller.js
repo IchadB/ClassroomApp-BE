@@ -11,8 +11,18 @@ function getAllStudents(req, res){
     res.json(studentsModel)
 }
 
+function loginStudent(req, res){
+
+    const { username, password } = req.body;
+    const findStudent = studentsModel.find(student => student.username === username && student.password === password);
+    !findStudent
+        ? res.status(400).json({status: false, msg: "Login Failed"})
+        : res.status(200).json({status: true})
+}
+
 
 module.exports = {
     getAllTeachers,
-    getAllStudents
+    getAllStudents,
+    loginStudent
 }

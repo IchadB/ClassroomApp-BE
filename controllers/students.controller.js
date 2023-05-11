@@ -14,9 +14,15 @@ function getAllStudents(req, res){
 function loginStudent(req, res){
     const { username, password } = req.body;
     const findStudent = studentsModel.find(student => student.username === username && student.password === password);
-    !findStudent
-        ? res.status(400).json({status: false, msg: "Login Failed"})
-        : res.status(200).json({status: true})
+    const findTeacher = teacherModel.find(teacher => teacher.username === username && teacher.password === password);
+
+    if(findStudent){
+        res.status(200).json({status: true, value: "Student"})
+    } else if(findTeacher){
+        res.status(200).json({status: true,  value: "Teacher"})
+    } else {
+        res.status(400).json({msg: "User not found"})
+    }
 }
 
 function regStudent(req, res){
@@ -28,7 +34,7 @@ function regStudent(req, res){
         : res.status(404).json({msg: "Product Quantity cannot be empty"})
     } else {  
         studentsModel.push({id, fname, lname, username, contact, age, gender, password });
-        res.send(`${fname} is successfully added`);
+        res.status(200).json({status: true})
     }
 };
 

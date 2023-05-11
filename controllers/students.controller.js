@@ -11,10 +11,12 @@ function getAllStudents(req, res){
     res.json(studentsModel)
 }
 
-function loginStudent(req, res){
+function loginUser(req, res){
     const { username, password } = req.body;
     const findStudent = studentsModel.find(student => student.username === username && student.password === password);
     const findTeacher = teacherModel.find(teacher => teacher.username === username && teacher.password === password);
+    // const student = findStudent.fname
+    // const teacher = findTeacher.fname
 
     if(findStudent){
         res.status(200).json({status: true, value: "Student"})
@@ -26,14 +28,15 @@ function loginStudent(req, res){
 }
 
 function regStudent(req, res){
-    const { fname, lname, username, contact, age, gender, password } = req.body;
+    const { fname, lname, username, contact, age, gender, address, password, password2 } = req.body;
     const id = studentsModel.length
-    if (!fname || !lname){
-        !fname 
-        ? res.status(404).json({msg: "Product Name cannot be empty"})
-        : res.status(404).json({msg: "Product Quantity cannot be empty"})
-    } else {  
-        studentsModel.push({id, fname, lname, username, contact, age, gender, password });
+
+    if(!fname || !lname || !username || !contact || !age || !gender || !address || !password || !password2 ){
+        res.status(400).json({msg: "Please fill out all fields"})
+    } else if (password !== password2){
+        res.status(400).json({msg: "Password does not match"})
+    } else {
+        studentsModel.push({id, fname, lname, username, contact, age, gender, address, password });
         res.status(200).json({status: true})
     }
 };
@@ -42,6 +45,6 @@ function regStudent(req, res){
 module.exports = {
     getAllTeachers,
     getAllStudents,
-    loginStudent,
+    loginUser,
     regStudent
 }

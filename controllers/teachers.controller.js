@@ -1,6 +1,6 @@
 const teacherModel = require('../models/teachers.model');
 const studentsModel = require('../models/students.model');
-const examModel = require('../models/create_exam.model')
+const examsModel = require('../models/create_exam.model')
 
 function getAllTeachers(req, res){
     !teacherModel
@@ -37,7 +37,23 @@ function getStudent(req, res){
 }
 
 function createExamFirstPart(req, res){
+    const { subject, title, desc, examLength } = req.body;
+    const id = examsModel.length
+    examsModel.push({id, subject, title, desc, examLength});
 
+}
+
+function getExams(req, res){
+    res.json(examsModel)
+}
+
+function getExam(req, res){
+    const id = +req.params.id
+    const findExam = examsModel.find(exam => exam.id === id)
+    const { subject, title, desc, examLength } = findExam
+    findExam
+        ? res.status(200).json({status: true, subject, title, desc, examLength})
+        : res.status(400).json({status: false, msg: "Not found"})
 }
 
 module.exports = {
@@ -45,5 +61,7 @@ module.exports = {
     getAllStudents,
     getStudent,
     regStudent,
-    createExamFirstPart
+    createExamFirstPart,
+    getExams,
+    getExam
 };

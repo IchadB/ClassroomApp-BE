@@ -3,9 +3,11 @@ const studentsModel = require("../models/students.model");
 const examsModel = require("../models/create_exam.model");
 
 function getAllTeachers(req, res) {
-  !teacherModel
-    ? res.status(400).json({ msg: "No Teacher/s registered yet" })
-    : res.json(teacherModel);
+  teacherModel === 0
+    ? res
+        .status(400)
+        .json({ status: false, msg: "No Teacher/s registered yet" })
+    : res.status(200).json({ status: true, teacher: teacherModel });
 }
 
 function getAllStudents(req, res) {

@@ -13,6 +13,8 @@ function getAllStudents(req, res) {
 
 function loginUser(req, res) {
 	const { username, password } = req.body;
+	console.log(username);
+	console.log(password);
 	const findStudent = studentsModel.find(
 		(student) => student.username === username && student.password === password
 	);
@@ -27,7 +29,7 @@ function loginUser(req, res) {
 	} else if (findTeacher) {
 		res.status(200).json({ status: true, value: "Teacher" });
 	} else {
-		res.status(400).json({ msg: "User not found" });
+		res.status(200).json({ msg: "User not found" });
 	}
 }
 
@@ -36,6 +38,7 @@ function regStudent(req, res) {
 		fname,
 		lname,
 		username,
+		email,
 		contact,
 		age,
 		gender,
@@ -50,15 +53,21 @@ function regStudent(req, res) {
 		!lname ||
 		!username ||
 		!contact ||
+		!email ||
 		!age ||
 		!gender ||
 		!address ||
 		!password ||
 		!password2
 	) {
-		res.status(400).json({ msg: "Please fill out all fields" });
+		res
+			.status(200)
+			.json({ status: false, message: "Please fill out all fields" });
 	} else if (password !== password2) {
-		res.status(400).json({ msg: "Password does not match" });
+		return res.status(200).json({
+			status: false,
+			message: "Password does not match",
+		});
 	} else {
 		studentsModel.push({
 			id,
@@ -66,41 +75,14 @@ function regStudent(req, res) {
 			lname,
 			username,
 			contact,
+			email,
 			age,
 			gender,
 			address,
 			password,
 		});
-		res.status(200).json({ status: true });
+		res.status(200).json({ status: true, message: "successfully registered" });
 	}
-}
-
-function registerStudents(req, res) {
-	const {
-		fname,
-		lname,
-		username,
-		contact,
-		age,
-		email,
-		gender,
-		address,
-		password,
-		password2,
-	} = req.body;
-
-	studentsModel.push({
-		fname,
-		lname,
-		username,
-		contact,
-		age,
-		email,
-		gender,
-		address,
-		password,
-		password2,
-	});
 }
 
 module.exports = {
@@ -108,5 +90,4 @@ module.exports = {
 	getAllStudents,
 	loginUser,
 	regStudent,
-	registerStudents,
 };

@@ -42,7 +42,6 @@ function regStudent(req, res) {
     !age ||
     !gender ||
     !address ||
-    !address ||
     !password ||
     !password2
   ) {
@@ -88,10 +87,56 @@ function getExams(req, res) {
 function getExam(req, res) {
   const id = +req.params.id;
   const findExam = examsModel.find((exam) => exam.id === id);
-  const { subject, title, desc, examLength } = findExam;
+  // const { subject, title, desc, examLength } = findExam;
   findExam
-    ? res.status(200).json({ status: true, subject, title, desc, examLength })
+    ? res.status(200).json({ status: true, exam: findExam })
     : res.status(400).json({ status: false, msg: "Not found" });
+}
+
+function updateStudents(req, res) {
+  const {
+    id,
+    fname,
+    lname,
+    email,
+    username,
+    contact,
+    img,
+    age,
+    gender,
+    address,
+    password,
+  } = req.body;
+  const student = studentsModel.find((student) => student.id === id);
+  if (
+    fname ||
+    lname ||
+    username ||
+    // img ||
+    email ||
+    contact ||
+    age ||
+    gender ||
+    address ||
+    password
+  ) {
+    student.fname = fname;
+    student.lname = lname;
+    student.username = username;
+    // student.img = img;
+    student.email = email;
+    student.contact = contact;
+    student.age = age;
+    student.gender = gender;
+    student.address = address;
+    student.password = password;
+    res.send("Student has been updated");
+  } else {
+    res.status(404).json({ msg: "Please provide name and quantity" });
+  }
+  // student
+  //   ? res.status(200).json({ status: true, student: student })
+  //   : res.status(400).json({ status: false, msg: "Student not found" });
 }
 
 module.exports = {
@@ -102,4 +147,5 @@ module.exports = {
   createExamFirstPart,
   getExams,
   getExam,
+  updateStudents,
 };

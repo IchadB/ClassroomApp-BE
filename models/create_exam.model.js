@@ -55,9 +55,9 @@ const exams = [
   },
   {
     id: 1,
-    subject: "Math",
-    title: "Algebra",
-    desc: "Basic math operation",
+    subject: "English",
+    title: "Noun/Pronoun",
+    desc: "Description",
     examLength: 5,
     questions: [
       {

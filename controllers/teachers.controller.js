@@ -21,6 +21,7 @@ function regStudent(req, res) {
     fname,
     lname,
     username,
+    img,
     email,
     contact,
     age,
@@ -35,6 +36,7 @@ function regStudent(req, res) {
     !fname ||
     !lname ||
     !username ||
+    !img ||
     !email ||
     !contact ||
     !age ||
@@ -55,6 +57,7 @@ function regStudent(req, res) {
       email,
       username,
       contact,
+      img,
       age,
       gender,
       address,

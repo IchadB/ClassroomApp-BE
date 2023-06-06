@@ -142,7 +142,7 @@ function updateStudents(req, res) {
 
 function deleteStudents(req, res) {
   const id = parseInt(req.params.id);
-  let found = studentsModel.some((product) => product.id === id);
+  let found = studentsModel.some((student) => student.id === id);
   if (found) {
     studentsModel.splice(id, 1);
 

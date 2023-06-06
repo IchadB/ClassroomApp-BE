@@ -12,6 +12,7 @@ routes.get("/activities/:id", teacherController.getExam);
 routes.post("/add-student", teacherController.regStudent);
 routes.post("/create-exam-first-part", teacherController.createExamFirstPart);
 
-routes.put("/get-students/:id", teacherController.updateStudents);
+routes.put("/update-student/:id", teacherController.updateStudents);
+routes.delete("/delete-student/:id", teacherController.deleteStudents);
 
 module.exports = routes;

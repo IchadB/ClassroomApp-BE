@@ -101,7 +101,7 @@ function updateStudents(req, res) {
     email,
     username,
     contact,
-    img,
+    // img,
     age,
     gender,
     address,
@@ -120,6 +120,7 @@ function updateStudents(req, res) {
     address ||
     password
   ) {
+    student.id = id;
     student.fname = fname;
     student.lname = lname;
     student.username = username;
@@ -139,6 +140,18 @@ function updateStudents(req, res) {
   //   : res.status(400).json({ status: false, msg: "Student not found" });
 }
 
+function deleteStudents(req, res) {
+  const id = parseInt(req.params.id);
+  let found = studentsModel.some((product) => product.id === id);
+  if (found) {
+    studentsModel.splice(id, 1);
+
+    res.status(200).json(`Student with the ID 0f ${id} is deleted`);
+  } else {
+    res.status(404).json({ msg: "Product does not exist" });
+  }
+}
+
 module.exports = {
   getAllTeachers,
   getAllStudents,
@@ -148,4 +161,5 @@ module.exports = {
   getExams,
   getExam,
   updateStudents,
+  deleteStudents,
 };

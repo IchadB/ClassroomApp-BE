@@ -3,15 +3,7 @@ const routes = express.Router();
 
 const studentsController = require("../controllers/students.controller");
 
-//login a student or teacher
-routes.post("/login", studentsController.loginUser);
-//get all students
 routes.get("/get-students", studentsController.getAllStudents);
-
-//registering a student
 routes.post("/reg-student", studentsController.regStudent);
-
-//attendance of students
-// routes.post("/attendance-student", studentsController.studentsAttendance);
 
 module.exports = routes;

@@ -7,6 +7,7 @@ const PORT = process.env.PORT || 5000;
 
 const teacherRouter = require("./routes/teachers.routes");
 const studentsRouter = require("./routes/students.routes");
+const usersRouter = require("./routes/users.routes");
 
 connectDB();
 
@@ -15,13 +16,14 @@ app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 app.use(express.json());
 
 app.use(
-  cors({
-    origin: "http://localhost:3000",
-  })
+	cors({
+		origin: "http://localhost:3000",
+	})
 );
 
 app.use("/teachers", teacherRouter);
 app.use("/students", studentsRouter);
+app.use("/users", usersRouter);
 
 app.listen(PORT, () => console.log(`Server started at PORT: ${PORT}`));
 

@@ -1,11 +1,7 @@
 const mongoose = require("mongoose");
 
 const studentSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
-  },
-  password: {
+  fname: {
     type: String,
     required: true,
   },
@@ -13,15 +9,23 @@ const studentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  fname: {
+  email: {
+    type: String,
+    required: true,
+  },
+  username: {
     type: String,
     required: true,
   },
   contact: {
-    type: String,
+    type: Number,
     required: true,
   },
   gender: {
+    type: String,
+    required: true,
+  },
+  img: {
     type: String,
     required: true,
   },
@@ -29,13 +33,14 @@ const studentSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  address: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
 });
-// fname: "Richard",
-//     lname: "Betalmos",
-//     username: "IchadB",
-//     email: "ichad@gmail.com",
-//     contact: 09925235991,
-//     gender: "Male",
-//     age: 30,
-//     password: "1234ichad",
-module.exports = mongoose.model("Student", studentSchema);
+
+module.exports = mongoose.model("Students", studentSchema);

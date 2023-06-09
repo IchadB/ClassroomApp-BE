@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const MONGO_URL =
   "mongodb+srv://IchadB:ichadB@cluster0.2epkefm.mongodb.net/ClassroomAppDB?retryWrites=true&w=majority";
+
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(MONGO_URL);
@@ -14,9 +15,3 @@ const connectDB = async () => {
 };
 
 module.exports = connectDB;
-
-// mongoose.connection.on("error", (err) => {
-//   console.error(err);
-// });
-
-// mongoose.connect(MONGO_URL);

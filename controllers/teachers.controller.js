@@ -1,4 +1,6 @@
 const studentDB = require("../models/student_mongo");
+const teachersDB = require("../models/teacher_mongo");
+const examDB = require("../models/exam_mongo");
 
 function getAllTeachers(req, res) {
   // teacherModel === 0
@@ -18,7 +20,7 @@ function regStudent(req, res) {
     fname,
     lname,
     username,
-    // img,
+    img,
     email,
     contact,
     age,
@@ -28,12 +30,11 @@ function regStudent(req, res) {
     password2,
   } = req.body;
 
-  console.log(fname, lname, username, email);
   if (
     !fname ||
     !lname ||
     !username ||
-    // !img ||
+    !img ||
     !email ||
     !contact ||
     !age ||
@@ -54,7 +55,7 @@ function regStudent(req, res) {
           email,
           username,
           contact,
-          // img,
+          img,
           age,
           gender,
           address,
@@ -65,20 +66,6 @@ function regStudent(req, res) {
         res.status(200).json({ status: true, msg: "User already exist" });
       }
     });
-    // studentsModel.push({
-    //   id,
-    //   fname,
-    //   lname,
-    //   email,
-    //   username,
-    //   contact,
-    //   // img,
-    //   age,
-    //   gender,
-    //   address,
-    //   password,
-    // });
-    // res.send(`${fname} is successfully added`);
   }
 }
 

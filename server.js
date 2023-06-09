@@ -18,8 +18,8 @@ app.use(
   })
 );
 
-app.use(bodyParser.json({ limit: "10mb" }));
-app.use(bodyParser.urlencoded({ extended: true, limit: "10mb" }));
+app.use(bodyParser.json({ limit: "15mb" }));
+app.use(bodyParser.urlencoded({ extended: true, limit: "15mb" }));
 
 app.use("/teachers", teacherRouter);
 app.use("/students", studentsRouter);

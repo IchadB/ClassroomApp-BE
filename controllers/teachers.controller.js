@@ -1,6 +1,7 @@
 const studentDB = require("../models/student_mongo");
 const teachersDB = require("../models/teacher_mongo");
 const examDB = require("../models/exam_mongo");
+const { ObjectId } = require("bson");
 
 function getAllTeachers(req, res) {
   // teacherModel === 0
@@ -101,21 +102,33 @@ function getExam(req, res) {
   //   : res.status(400).json({ status: false, msg: "Not found" });
 }
 
-function updateStudent(req, res) {
-  // const {
-  //   id,
-  //   fname,
-  //   lname,
-  //   email,
-  //   username,
-  //   contact,
-  //   // img,
-  //   age,
-  //   gender,
-  //   address,
-  //   password,
-  // } = req.body;
-  // const student = studentsModel.find((student) => student.id === id);
+async function updateStudent(req, res) {
+  const id = req.params.id;
+  const {
+    fname,
+    lname,
+    email,
+    username,
+    contact,
+    // img,
+    age,
+    gender,
+    address,
+    password,
+  } = req.body;
+  const student = await studentDB.findByIdAndUpdate(id, {
+    fname: fname,
+    lname: lname,
+    email: email,
+    username: username,
+    contact: contact,
+    // img,
+    age: age,
+    gender: gender,
+    address: address,
+    password: password,
+  });
+  res.status(200).json({ msg: "Student updated", student });
   // if (
   //   fname ||
   //   lname ||
@@ -139,6 +152,7 @@ function updateStudent(req, res) {
   //   student.gender = gender;
   //   student.address = address;
   //   student.password = password;
+  //   student.save();
   //   res.send("Student has been updated");
   // } else {
   //   res.status(404).json({ msg: "Please provide name and quantity" });
@@ -148,15 +162,15 @@ function updateStudent(req, res) {
   //   : res.status(400).json({ status: false, msg: "Student not found" });
 }
 
-function deleteStudent(req, res) {
-  // const id = parseInt(req.params.id);
-  // let found = studentsModel.some((student) => student.id === id);
-  // if (found) {
-  //   studentsModel.splice(id, 1);
-  //   res.status(200).json(`Student with the ID 0f ${id} is deleted`);
-  // } else {
-  //   res.status(404).json({ msg: "Product does not exist" });
-  // }
+async function deleteStudent(req, res) {
+  const id = req.params.id;
+
+  if (ObjectId.isValid(id)) {
+    await studentDB.deleteOne({ _id: id });
+    res.status(200).json({ status: true, msg: "Student is deleted" });
+  } else {
+    res.status(500).json({ status: false, msg: "Student not found" });
+  }
 }
 
 module.exports = {

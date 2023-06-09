@@ -12,6 +12,6 @@ routes.get("/get-students", studentsController.getAllStudents);
 routes.post("/reg-student", studentsController.regStudent);
 
 //attendance of students
-routes.post("/attendance-student", studentsController.studentsAttendance);
+// routes.post("/attendance-student", studentsController.studentsAttendance);
 
 module.exports = routes;

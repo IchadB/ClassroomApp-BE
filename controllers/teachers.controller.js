@@ -141,7 +141,7 @@ async function deleteExam(req, res) {
 
   if (ObjectId.isValid(id)) {
     await examDB.deleteOne({ _id: id });
-    res.status(200).json({ status: true, msg: "Exam is deleted" });
+    res.status(200).json({ status: true, msg: "Exam is deleted", examDB });
   } else {
     res.status(500).json({ status: false, msg: "Exam not found" });
   }

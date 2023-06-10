@@ -44,30 +44,31 @@ function regStudent(req, res) {
     !password ||
     !password2
   ) {
-    res.status(400).json({ status: false, msg: "Please fill out all fields" });
+    return res
+      .status(400)
+      .json({ status: false, msg: "Please fill out all fields" });
   } else if (password !== password2) {
-    res.status(400).json({ msg: "Password does not match" });
-  } else {
-    studentDB.find({ email: email }).then(async (user) => {
-      if (!user.length) {
-        await studentDB.create({
-          fname,
-          lname,
-          email,
-          username,
-          contact,
-          img,
-          age,
-          gender,
-          address,
-          password,
-        });
-        res.status(200).json({ status: true, msg: "User registered" });
-      } else {
-        res.status(200).json({ status: true, msg: "User already exist" });
-      }
-    });
+    return res.status(400).json({ msg: "Password does not match" });
   }
+  studentDB.find({ email: email }).then(async (user) => {
+    if (!user.length) {
+      await studentDB.create({
+        fname,
+        lname,
+        email,
+        username,
+        contact,
+        img,
+        age,
+        gender,
+        address,
+        password,
+      });
+      res.status(200).json({ status: true, msg: "User registered" });
+    } else {
+      res.status(200).json({ status: true, msg: "User already exist" });
+    }
+  });
 }
 
 function getStudent(req, res) {
@@ -78,28 +79,67 @@ function getStudent(req, res) {
   //   : res.status(404).json({ msg: "Sudent does not exist" });
 }
 
-function createExamFirstPart(req, res) {
-  // const { subject, title, desc, examLength } = req.body;
-  // const id = examsModel.length;
+async function createExamFirstPart(req, res) {
+  const { subject, title, desc, examLength } = req.body;
+
+  if (subject || title || desc || examLength) {
+    const exam = await examDB.create({
+      subject: subject,
+      title: title,
+      desc: desc,
+      examLength: examLength,
+    });
+    res.status(200).json(exam);
+    // console.log(exam);
+  } else {
+    res.status(400).json({ status: false, msg: "Invalid " });
+  }
+}
+async function createExamSecondPart(req, res) {
+  const id = req.params.id;
+  // const { subject, title, desc, examLength, questions } = req.body;
+  // console.log(typeof questions);
+  // console.log(typeof subject);
+
+  // console.log(questions);
   // if (subject || title || desc || examLength) {
-  //   examsModel.push({ id, subject, title, desc, examLength });
-  //   res.status(200).json({ status: true, msg: "Exam first part created" });
+  const exam = await examDB.updateOne(
+    { _id: id },
+    req.body
+    // {
+    //   subject: subject,
+    //   title: title,
+    //   desc: desc,
+    //   examLength: examLength,
+    //   questions: questions,
+    // }
+  );
+  res.status(200).json(exam);
+  // console.log(exam);
   // } else {
-  //   res.status(400).json({ status: false, msg: "Invalid " });
+  res.status(400).json({ status: false, msg: "Invalid " });
   // }
 }
-
-function getExams(req, res) {
-  // res.json(examsModel);
+async function getExams(req, res) {
+  const exam = await examDB.find();
+  res.status(200).json(exam);
 }
 
-function getExam(req, res) {
-  // const id = +req.params.id;
-  // const findExam = examsModel.find((exam) => exam.id === id);
-  // // const { subject, title, desc, examLength } = findExam;
-  // findExam
-  //   ? res.status(200).json({ status: true, exam: findExam })
-  //   : res.status(400).json({ status: false, msg: "Not found" });
+async function getExam(req, res) {
+  const id = req.params.id;
+  const exam = await examDB.find({ _id: id });
+  // const { subject, title, desc, examLength } = findExam;
+  res.status(200).json(exam);
+}
+async function deleteExam(req, res) {
+  const id = req.params.id;
+
+  if (ObjectId.isValid(id)) {
+    await examDB.deleteOne({ _id: id });
+    res.status(200).json({ status: true, msg: "Exam is deleted" });
+  } else {
+    res.status(500).json({ status: false, msg: "Exam not found" });
+  }
 }
 
 async function updateStudent(req, res) {
@@ -129,37 +169,6 @@ async function updateStudent(req, res) {
     password: password,
   });
   res.status(200).json({ msg: "Student updated", student });
-  // if (
-  //   fname ||
-  //   lname ||
-  //   username ||
-  //   // img ||
-  //   email ||
-  //   contact ||
-  //   age ||
-  //   gender ||
-  //   address ||
-  //   password
-  // ) {
-  //   student.id = id;
-  //   student.fname = fname;
-  //   student.lname = lname;
-  //   student.username = username;
-  //   // student.img = img;
-  //   student.email = email;
-  //   student.contact = contact;
-  //   student.age = age;
-  //   student.gender = gender;
-  //   student.address = address;
-  //   student.password = password;
-  //   student.save();
-  //   res.send("Student has been updated");
-  // } else {
-  //   res.status(404).json({ msg: "Please provide name and quantity" });
-  // }
-  // student
-  //   ? res.status(200).json({ status: true, student: student })
-  //   : res.status(400).json({ status: false, msg: "Student not found" });
 }
 
 async function deleteStudent(req, res) {
@@ -179,8 +188,10 @@ module.exports = {
   getStudent,
   regStudent,
   createExamFirstPart,
+  createExamSecondPart,
   getExams,
   getExam,
   updateStudent,
   deleteStudent,
+  deleteExam,
 };

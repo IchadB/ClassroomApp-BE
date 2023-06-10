@@ -29,13 +29,10 @@ const teacherSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  createdAt: {
+    type: Date,
+    default: () => Date.now(),
+  },
 });
-// fname: "Richard",
-//     lname: "Betalmos",
-//     username: "IchadB",
-//     email: "ichad@gmail.com",
-//     contact: 09925235991,
-//     gender: "Male",
-//     age: 30,
-//     password: "1234ichad",
+
 module.exports = mongoose.model("Teachers", teacherSchema);

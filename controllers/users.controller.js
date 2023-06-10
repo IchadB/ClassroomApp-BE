@@ -8,11 +8,14 @@ function loginUser(req, res) {
 	studentsModel
 		.find({ username: username, password: password })
 		.then((user) => {
-			!user.length
-				? res
-						.status(200)
-						.json({ status: false, message: "User does not exists" })
-				: res.status(200).json(user);
+			if (!user.length) {
+				res.status(200).json({
+					status: false,
+					message: "User not found",
+				});
+			} else {
+				res.status(200).json(user);
+			}
 		});
 }
 

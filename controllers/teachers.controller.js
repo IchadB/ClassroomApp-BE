@@ -54,26 +54,27 @@ function regStudent(req, res) {
       .json({ status: false, msg: "Please fill out all fields" });
   } else if (password !== password2) {
     return res.status(400).json({ msg: "Password does not match" });
+  } else {
+    studentDB.find({ email: email }).then(async (user) => {
+      if (!user.length) {
+        await studentDB.create({
+          fname,
+          lname,
+          email,
+          username,
+          contact,
+          img,
+          age,
+          gender,
+          address,
+          password,
+        });
+        res.status(200).json({ status: true, msg: "User registered" });
+      } else {
+        res.status(200).json({ status: true, msg: "User already exist" });
+      }
+    });
   }
-  studentDB.find({ email: email }).then(async (user) => {
-    if (!user.length) {
-      await studentDB.create({
-        fname,
-        lname,
-        email,
-        username,
-        contact,
-        img,
-        age,
-        gender,
-        address,
-        password,
-      });
-      res.status(200).json({ status: true, msg: "User registered" });
-    } else {
-      res.status(200).json({ status: true, msg: "User already exist" });
-    }
-  });
 }
 
 function getStudent(req, res) {
@@ -100,31 +101,20 @@ async function createExamFirstPart(req, res) {
     res.status(400).json({ status: false, msg: "Invalid " });
   }
 }
+
 async function createExamSecondPart(req, res) {
   const id = req.params.id;
-  // const { subject, title, desc, examLength, questions } = req.body;
-  // console.log(typeof questions);
-  // console.log(typeof subject);
 
-  // console.log(questions);
-  // if (subject || title || desc || examLength) {
-  const exam = await examDB.updateOne(
-    { _id: id },
-    req.body
-    // {
-    //   subject: subject,
-    //   title: title,
-    //   desc: desc,
-    //   examLength: examLength,
-    //   questions: questions,
-    // }
-  );
-  res.status(200).json(exam);
-  // console.log(exam);
-  // } else {
-  res.status(400).json({ status: false, msg: "Invalid " });
-  // }
+  if (ObjectId.isValid(id)) {
+    const exam = await examDB.updateOne({ _id: id }, req.body);
+    exam.acknowledged
+      ? res.status(200).json({ status: true, msg: "Updated" })
+      : res.status(400).json({ status: false, msg: "Bad Request" });
+  } else {
+    res.status(400).json({ status: false, msg: "Invalid Request URI" });
+  }
 }
+
 async function getExams(req, res) {
   const exam = await examDB.find();
   res.status(200).json(exam);
@@ -132,18 +122,26 @@ async function getExams(req, res) {
 
 async function getExam(req, res) {
   const id = req.params.id;
-  const exam = await examDB.find({ _id: id });
-  // const { subject, title, desc, examLength } = findExam;
-  res.status(200).json(exam);
+  if (ObjectId.isValid(id)) {
+    const exam = await examDB.find({ _id: id });
+    exam
+      ? res.status(200).json(exam)
+      : res.status(400).json({ status: false, msg: "Bad Request" });
+  } else {
+    res.status(400).json({ status: false, msg: "Invalid Request URI" });
+  }
 }
+
 async function deleteExam(req, res) {
   const id = req.params.id;
 
   if (ObjectId.isValid(id)) {
-    await examDB.deleteOne({ _id: id });
-    res.status(200).json({ status: true, msg: "Exam is deleted", examDB });
+    const exams = await examDB.findByIdAndDelete({ _id: id });
+    exams
+      ? res.status(200).json({ status: true, msg: "Exam is deleted" })
+      : res.status(404).json({ status: false, msg: "Exam does not exist" });
   } else {
-    res.status(500).json({ status: false, msg: "Exam not found" });
+    res.status(400).json({ status: false, msg: "Invalid Request URI" });
   }
 }
 
@@ -183,7 +181,7 @@ async function deleteStudent(req, res) {
     await studentDB.deleteOne({ _id: id });
     res.status(200).json({ status: true, msg: "Student is deleted" });
   } else {
-    res.status(500).json({ status: false, msg: "Student not found" });
+    res.status(400).json({ status: false, msg: "Student not found" });
   }
 }
 

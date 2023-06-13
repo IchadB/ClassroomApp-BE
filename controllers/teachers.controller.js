@@ -3,13 +3,57 @@ const teachersDB = require("../models/teacher_mongo");
 const examDB = require("../models/exam_mongo");
 const { ObjectId } = require("bson");
 
-// function getAllTeachers(req, res) {
-// 	// teacherModel === 0
-// 	// ? res
-// 	//     .status(400)
-// 	//     .json({ status: false, msg: "No Teacher/s registered yet" })
-// 	// : res.status(200).json({ status: true});
-// }
+function getAllTeachers(req, res) {
+  // teacherModel === 0
+  // ? res
+  //     .status(400)
+  //     .json({ status: false, msg: "No Teacher/s registered yet" })
+  // : res.status(200).json({ status: true});
+}
+async function regTeacher(req, res) {
+  const {
+    fname,
+    lname,
+    username,
+    // img,
+    email,
+    contact,
+    age,
+    gender,
+    address,
+    password,
+    password2,
+  } = req.body;
+
+  if (
+    !fname ||
+    !lname ||
+    !username ||
+    // !img ||
+    !email ||
+    !contact ||
+    !age ||
+    !gender ||
+    !address ||
+    !password ||
+    !password2
+  ) {
+    return res
+      .status(400)
+      .json({ status: false, msg: "Please fill out all fields" });
+  } else if (password !== password2) {
+    return res.status(400).json({ msg: "Password does not match" });
+  } else {
+    teachersDB.find({ email: email }).then(async (user) => {
+      if (!user.length) {
+        await teachersDB.create(req.body);
+        res.status(200).json({ status: true, msg: "User registered" });
+      } else {
+        res.status(200).json({ status: false, msg: "User already exist" });
+      }
+    });
+  }
+}
 
 async function getAllStudents(req, res) {
   const students = await studentDB.find();
@@ -106,7 +150,7 @@ async function createExamSecondPart(req, res) {
   const id = req.params.id;
 
   if (ObjectId.isValid(id)) {
-    const exam = await examDB.updateOne({ _id: id }, req.body);
+    const exam = await examDB.updateOne({ _id: id }, { questions: req.body });
     exam.acknowledged
       ? res.status(200).json({ status: true, msg: "Updated" })
       : res.status(400).json({ status: false, msg: "Bad Request" });
@@ -187,6 +231,7 @@ async function deleteStudent(req, res) {
 
 module.exports = {
   getAllTeachers,
+  regTeacher,
   getAllStudents,
   getStudent,
   regStudent,

@@ -25,11 +25,19 @@ const teacherSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  img: {
+    type: String,
+    required: true,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
   age: {
     type: String,
     required: true,
   },
-  createdAt: {
+  joinedDate: {
     type: Date,
     default: () => Date.now(),
   },

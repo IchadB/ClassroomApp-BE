@@ -4,11 +4,8 @@ const examDB = require("../models/exam_mongo");
 const { ObjectId } = require("bson");
 
 function getAllTeachers(req, res) {
-  // teacherModel === 0
-  // ? res
-  //     .status(400)
-  //     .json({ status: false, msg: "No Teacher/s registered yet" })
-  // : res.status(200).json({ status: true});
+  const teachers = teachersDB.find();
+  res.status(200).json({ status: true, msg: "" }, teachers);
 }
 async function regTeacher(req, res) {
   const {

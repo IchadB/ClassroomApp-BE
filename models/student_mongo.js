@@ -41,7 +41,7 @@ const studentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  createdAt: {
+  joinedDate: {
     type: Date,
     default: () => Date.now(),
   },

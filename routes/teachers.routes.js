@@ -9,7 +9,7 @@ routes.get("/get-students/:id", teacherController.getStudent);
 routes.get("/activities", teacherController.getExams);
 routes.get("/activities/:id", teacherController.getExam);
 routes.get("/activities/part2/:id", teacherController.getExam);
-
+routes.post("/add-teacher", teacherController.regTeacher);
 routes.post("/add-student", teacherController.regStudent);
 routes.post("/create-exam-first-part", teacherController.createExamFirstPart);
 routes.patch(

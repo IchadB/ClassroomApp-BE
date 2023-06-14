@@ -175,12 +175,13 @@ async function getExam(req, res) {
 
 async function deleteExam(req, res) {
   const id = req.params.id;
-
+  // console.log(id);
   if (ObjectId.isValid(id)) {
     const exams = await examDB.findByIdAndDelete({ _id: id });
+    // console.log(exams);
     exams
       ? res.status(200).json({ status: true, msg: "Exam is deleted" })
-      : res.status(404).json({ status: false, msg: "Exam does not exist" });
+      : res.status(400).json({ status: false, msg: "Exam does not exist" });
   } else {
     res.status(400).json({ status: false, msg: "Invalid Request URI" });
   }

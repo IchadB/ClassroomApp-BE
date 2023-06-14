@@ -90,9 +90,24 @@ const getAllAttendanceStudents = (req, res) => {
 	});
 };
 
+const getStudent = (req, res) => {
+	const email = req.params.email;
+	console.log(email);
+
+	studentsModel.find({ email: email }).then((student) => {
+		if (!student.length) {
+			console.log(student);
+			res.status(200).json({ status: false, message: "User not found" });
+		} else {
+			res.json(student);
+		}
+	});
+};
+
 module.exports = {
 	getAllStudents,
 	regStudent,
 	addStudentAttendance,
 	getAllAttendanceStudents,
+	getStudent,
 };

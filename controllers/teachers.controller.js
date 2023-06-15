@@ -3,9 +3,22 @@ const teachersDB = require("../models/teacher_mongo");
 const examDB = require("../models/exam_mongo");
 const { ObjectId } = require("bson");
 
-function getAllTeachers(req, res) {
-  const teachers = teachersDB.find();
-  res.status(200).json({ status: true, msg: "" }, teachers);
+async function getAllTeachers(req, res) {
+  const teachers = await teachersDB.find();
+  !teachers.length
+    ? res.status(200).json({ status: false, msg: "No teachers registerd yet!" })
+    : res.status(200).json(teachers);
+}
+
+async function getTeacher(req, res) {
+  const id = req.params.id;
+
+  if (ObjectId.isValid(id)) {
+    const teacher = await teachersDB.find({ _id: id });
+    res.status(200).json(teacher);
+  } else {
+    res.status(400).json({ status: false, msg: "Teacher not found" });
+  }
 }
 async function regTeacher(req, res) {
   const {
@@ -55,11 +68,6 @@ async function regTeacher(req, res) {
 async function getAllStudents(req, res) {
   const students = await studentDB.find();
   res.status(200).json(students);
-}
-
-async function getAllTeachers(req, res) {
-  const teachers = await teachersDB.find({});
-  res.status(200).json(teachers);
 }
 
 function regStudent(req, res) {
@@ -175,12 +183,13 @@ async function getExam(req, res) {
 
 async function deleteExam(req, res) {
   const id = req.params.id;
-
+  // console.log(id);
   if (ObjectId.isValid(id)) {
     const exams = await examDB.findByIdAndDelete({ _id: id });
+    // console.log(exams);
     exams
       ? res.status(200).json({ status: true, msg: "Exam is deleted" })
-      : res.status(404).json({ status: false, msg: "Exam does not exist" });
+      : res.status(400).json({ status: false, msg: "Exam does not exist" });
   } else {
     res.status(400).json({ status: false, msg: "Invalid Request URI" });
   }
@@ -227,6 +236,7 @@ async function deleteStudent(req, res) {
 }
 
 module.exports = {
+  getTeacher,
   getAllTeachers,
   regTeacher,
   getAllStudents,

@@ -90,7 +90,7 @@ const getAllAttendanceStudents = (req, res) => {
 	});
 };
 
-const getStudent = (req, res) => {
+const getStudentByEmail = (req, res) => {
 	const email = req.params.email;
 	console.log(email);
 
@@ -109,5 +109,5 @@ module.exports = {
 	regStudent,
 	addStudentAttendance,
 	getAllAttendanceStudents,
-	getStudent,
+	getStudentByEmail,
 };

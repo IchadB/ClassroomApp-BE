@@ -33,8 +33,8 @@ async function loginUser(req, res) {
         status: true,
         msg: "Student verefied",
         type: "student",
-      },
-      isStudent._id
+      }
+      // isStudent._id
     );
   }
 }

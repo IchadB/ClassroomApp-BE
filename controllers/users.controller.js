@@ -64,7 +64,7 @@ function registerUser(req, res) {
       .status(200)
       .json({ status: false, msg: "Type must be specified" });
   }
-  if (type === "Student") {
+  if (type === "student") {
     studentsModel.find({ email: email }).then(async (user) => {
       if (!user.length) {
         await studentsModel.create({
@@ -79,9 +79,11 @@ function registerUser(req, res) {
           img,
           password,
         });
-        res
-          .status(200)
-          .json({ status: true, message: "User successfully registered!" });
+        res.status(200).json({
+          status: true,
+          message: "User successfully registered!",
+          type: "student",
+        });
       } else {
         res.status(200).json({
           status: false,

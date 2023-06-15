@@ -13,6 +13,10 @@ const teacherSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  username: {
+    type: String,
+    required: true,
+  },
   fname: {
     type: String,
     required: true,

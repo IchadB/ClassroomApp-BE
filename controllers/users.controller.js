@@ -1,22 +1,42 @@
 const studentsModel = require("../models/student_mongo");
 const teachersModel = require("../models/teacher_mongo");
 
-function loginUser(req, res) {
-  const username = req.body.username;
-  const password = req.body.password;
+async function loginUser(req, res) {
+  const { username, password } = req.body;
+  if (!username || !password) {
+    return res
+      .status(200)
+      .json({ status: false, msg: "All field must not be empty" });
+  }
 
-  studentsModel
-    .find({ username: username, password: password })
-    .then((user) => {
-      if (!user.length) {
-        res.status(200).json({
-          status: false,
-          message: "User not found",
-        });
-      } else {
-        res.status(200).json(user);
-      }
+  const isStudent = await studentsModel.find({
+    username: username,
+    password: password,
+  });
+  if (!isStudent.length) {
+    const isTeacher = await teachersModel.find({
+      username: username,
+      password: password,
     });
+    // console.log(isTeacher[0].fname);
+    !isTeacher.length
+      ? res.status(200).json({ status: false, msg: "User not found" })
+      : res.status(200).json({
+          status: true,
+          msg: "Teacher verefied",
+          type: "teacher",
+          id: isTeacher[0]._id,
+        });
+  } else {
+    res.status(200).json(
+      {
+        status: true,
+        msg: "Student verefied",
+        type: "student",
+      },
+      isStudent._id
+    );
+  }
 }
 
 function registerUser(req, res) {
@@ -34,7 +54,16 @@ function registerUser(req, res) {
     password2,
     type,
   } = req.body;
-
+  if (password !== password2) {
+    return res
+      .status(200)
+      .json({ status: false, msg: "Password does not match" });
+  }
+  if (!type) {
+    return res
+      .status(200)
+      .json({ status: false, msg: "Type must be specified" });
+  }
   if (type === "Student") {
     studentsModel.find({ email: email }).then(async (user) => {
       if (!user.length) {

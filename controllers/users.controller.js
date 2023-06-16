@@ -25,7 +25,7 @@ async function loginUser(req, res) {
           status: true,
           msg: "Teacher verefied",
           type: "teacher",
-          id: isTeacher[0]._id,
+          teachersData: isTeacher[0],
         });
   } else {
     res.status(200).json(
@@ -117,7 +117,12 @@ function registerUser(req, res) {
   }
 }
 
+const logoutUser = (req, res) => {
+  res.status(200).json({ msg: "User Logout Successfully" });
+};
+
 module.exports = {
   loginUser,
   registerUser,
+  logoutUser,
 };

@@ -18,7 +18,6 @@ async function loginUser(req, res) {
       username: username,
       password: password,
     });
-    // console.log(isTeacher[0].fname);
     !isTeacher.length
       ? res.status(200).json({ status: false, msg: "User not found" })
       : res.status(200).json({
@@ -28,14 +27,11 @@ async function loginUser(req, res) {
           teachersData: isTeacher[0],
         });
   } else {
-    res.status(200).json(
-      {
-        status: true,
-        msg: "Student verefied",
-        type: "student",
-      }
-      // isStudent._id
-    );
+    res.status(200).json({
+      status: true,
+      msg: "Student verefied",
+      type: "student",
+    });
   }
 }
 
@@ -78,11 +74,15 @@ function registerUser(req, res) {
           address,
           img,
           password,
+          type,
         });
-        res.status(200).json({
-          status: true,
-          message: "User successfully registered!",
-          type: "student",
+        studentsModel.find({ email: email }).then((response) => {
+          res.status(200).json({
+            status: true,
+            message: "User successfully registered!",
+            registeredData: response[0],
+            type: type,
+          });
         });
       } else {
         res.status(200).json({

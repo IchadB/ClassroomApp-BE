@@ -9,49 +9,6 @@ const getAllStudents = (req, res) => {
 	});
 };
 
-function regStudent(req, res) {
-	// const {
-	//   fname,
-	//   lname,
-	//   username,
-	//   contact,
-	//   age,
-	//   gender,
-	//   address,
-	//   password,
-	//   password2,
-	// } = req.body;
-	// const id = studentsModel.length;
-	// if (
-	//   !fname ||
-	//   !lname ||
-	//   !username ||
-	//   !contact ||
-	//   !age ||
-	//   !gender ||
-	//   !address ||
-	//   !password ||
-	//   !password2
-	// ) {
-	//   res.status(400).json({ msg: "Please fill out all fields" });
-	// } else if (password !== password2) {
-	//   res.status(400).json({ msg: "Password does not match" });
-	// } else {
-	//   studentsModel.push({
-	//     id,
-	//     fname,
-	//     lname,
-	//     username,
-	//     contact,
-	//     age,
-	//     gender,
-	//     address,
-	//     password,
-	//   });
-	//   res.status(200).json({ status: true });
-	// }
-}
-
 const addStudentAttendance = (req, res) => {
 	const { attendance, fname, lname, email, comment } = req.body;
 
@@ -106,7 +63,6 @@ const getStudentByEmail = (req, res) => {
 
 module.exports = {
 	getAllStudents,
-	regStudent,
 	addStudentAttendance,
 	getAllAttendanceStudents,
 	getStudentByEmail,

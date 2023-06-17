@@ -107,7 +107,14 @@ function registerUser(req, res) {
           img,
           password,
         });
-        res.status(200).json({ status: true, msg: "Teacher registered" });
+        res
+          .status(200)
+          .json({
+            status: true,
+            msg: "Teacher registered",
+            type: "teacher",
+            teachersData: user[0],
+          });
       } else {
         res
           .status(400)

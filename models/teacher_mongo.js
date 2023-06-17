@@ -33,6 +33,14 @@ const teacherSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  img: {
+    type: String,
+    required: true,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
   createdAt: {
     type: Date,
     default: () => Date.now(),

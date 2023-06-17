@@ -8,5 +8,6 @@ routes.post("/attendance-students", studentsController.addStudentAttendance);
 routes.get("/get-attendances", studentsController.getAllAttendanceStudents);
 routes.get("/student/:email", studentsController.getStudentByEmail);
 routes.get("/exam/:id", studentsController.getStudentExamById);
+routes.post("/answers", studentsController.answeredStudentExams);
 
 module.exports = routes;

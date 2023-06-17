@@ -22,15 +22,16 @@ async function loginUser(req, res) {
       ? res.status(200).json({ status: false, msg: "User not found" })
       : res.status(200).json({
           status: true,
-          msg: "Teacher verefied",
+          msg: "Teacher verified",
           type: "teacher",
-          teachersData: isTeacher[0],
+          registeredData: isTeacher[0],
         });
   } else {
     res.status(200).json({
       status: true,
-      msg: "Student verefied",
+      msg: "Student verified",
       type: "student",
+      registeredData: isStudent[0],
     });
   }
 }

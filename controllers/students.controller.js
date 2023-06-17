@@ -1,5 +1,7 @@
 const studentsModel = require("../models/student_mongo");
-const attendanceModel = require("../models/student-attendance_mongo");
+const attendanceModel = require("../models/student_attendance_mongo");
+const examModel = require("../models/exam_mongo");
+const { ObjectId } = require("bson");
 
 const getAllStudents = (req, res) => {
 	studentsModel.find().then((students) => {
@@ -61,9 +63,22 @@ const getStudentByEmail = (req, res) => {
 	});
 };
 
+const getStudentExamById = async (req, res) => {
+	const id = req.params.id;
+	if (ObjectId.isValid(id)) {
+		const exam = await examModel.find({ _id: id });
+		exam
+			? res.status(200).json(exam)
+			: res.status(400).json({ status: false, msg: "Bad Request" });
+	} else {
+		res.status(400).json({ status: false, msg: "Invalid Request URI" });
+	}
+};
+
 module.exports = {
 	getAllStudents,
 	addStudentAttendance,
 	getAllAttendanceStudents,
 	getStudentByEmail,
+	getStudentExamById,
 };

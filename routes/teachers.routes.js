@@ -3,6 +3,8 @@ const routes = express.Router();
 
 const teacherController = require("../controllers/teachers.controller");
 
+routes.get("/get-students-exams", teacherController.getExamsOfStudent);
+
 routes.get("/get-teacher/:id", teacherController.getTeacher);
 routes.get("/get-teachers", teacherController.getAllTeachers);
 routes.get("/get-students", teacherController.getAllStudents);
@@ -14,8 +16,8 @@ routes.post("/add-teacher", teacherController.regTeacher);
 routes.post("/add-student", teacherController.regStudent);
 routes.post("/create-exam-first-part", teacherController.createExamFirstPart);
 routes.patch(
-  "/create-exam-second-part/:id",
-  teacherController.createExamSecondPart
+	"/create-exam-second-part/:id",
+	teacherController.createExamSecondPart
 );
 
 routes.put("/update-student/:id", teacherController.updateStudent);

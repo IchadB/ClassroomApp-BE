@@ -1,8 +1,8 @@
 const studentsModel = require("../models/student_mongo");
 const attendanceModel = require("../models/student_attendance_mongo");
 const examModel = require("../models/exam_mongo");
+const answeredExamModel = require("../models/answered_exam_mongo");
 const { ObjectId } = require("bson");
-const answersExamModel = require("../models/answered_exam_mongo");
 
 const getAllStudents = (req, res) => {
 	studentsModel.find().then((students) => {
@@ -80,9 +80,9 @@ const answeredStudentExams = (req, res) => {
 	const { subject, answer, studentId, examId } = req.body;
 	// console.log(subject, answer, studentId, examId);
 
-	answersExamModel.find({ studentId: studentId }).then(async (data) => {
+	answeredExamModel.find({ studentId: studentId }).then(async (data) => {
 		if (!data.length) {
-			await answersExamModel.create({
+			await answeredExamModel.create({
 				subject,
 				answer,
 				studentId,
@@ -92,12 +92,13 @@ const answeredStudentExams = (req, res) => {
 				status: true,
 				message: "your answers has been sent",
 			});
-		} else {
-			res.status(200).json({
-				status: false,
-				message: "Answer already exists",
-			});
 		}
+		// else {
+		// 	res.status(200).json({
+		// 		status: false,
+		// 		message: "Answer already exists",
+		// 	});
+		// }
 	});
 };
 

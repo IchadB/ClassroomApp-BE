@@ -1,7 +1,7 @@
 const { ObjectId } = require("mongodb");
 const mongoose = require("mongoose");
 
-const answersSchema = new mongoose.Schema({
+const answeredSchema = new mongoose.Schema({
 	subject: {
 		type: String,
 		required: true,
@@ -24,4 +24,4 @@ const answersSchema = new mongoose.Schema({
 	},
 });
 
-module.exports = mongoose.model("answeredExams", answersSchema);
+module.exports = mongoose.model("answeredExams", answeredSchema);

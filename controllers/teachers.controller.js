@@ -1,7 +1,16 @@
 const studentDB = require("../models/student_mongo");
 const teachersDB = require("../models/teacher_mongo");
 const examDB = require("../models/exam_mongo");
+const answeredExamDB = require("../models/answered_exam_mongo");
 const { ObjectId } = require("bson");
+
+//get answered exams of student by Ferdie
+async function getExamsOfStudent(req, res) {
+  const answeredExams = await answeredExamDB.find();
+  !answeredExams
+    ? res.status(200).json({ status: false, msg: "No exams yet" })
+    : res.status(200).json(answeredExams);
+}
 
 async function getAllTeachers(req, res) {
   const teachers = await teachersDB.find();
@@ -236,6 +245,7 @@ async function deleteStudent(req, res) {
 }
 
 module.exports = {
+  getExamsOfStudent,
   getTeacher,
   getAllTeachers,
   regTeacher,

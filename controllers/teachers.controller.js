@@ -118,9 +118,9 @@ function regStudent(req, res) {
           address,
           password,
         });
-        res.status(200).json({ status: true, msg: "User registered" });
+        res.status(200).json({ status: true, msg: "Student Registered" });
       } else {
-        res.status(200).json({ status: true, msg: "User already exist" });
+        res.status(200).json({ status: true, msg: "Email already exist" });
       }
     });
   }
@@ -221,7 +221,7 @@ async function updateStudent(req, res) {
     address: address,
     password: password,
   });
-  res.status(200).json({ msg: "Student updated", student });
+  res.status(200).json({ status: true, msg: "Student updated" });
 }
 
 async function deleteStudent(req, res) {
@@ -229,7 +229,7 @@ async function deleteStudent(req, res) {
 
   if (ObjectId.isValid(id)) {
     await studentDB.deleteOne({ _id: id });
-    res.status(200).json({ status: true, msg: "Student is deleted" });
+    res.status(200).json({ status: true, msg: "Student deleted" });
   } else {
     res.status(400).json({ status: false, msg: "Student not found" });
   }

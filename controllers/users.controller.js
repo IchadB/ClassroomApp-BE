@@ -19,7 +19,12 @@ async function loginUser(req, res) {
       password: password,
     });
     !isTeacher.length
-      ? res.status(200).json({ status: false, msg: "User not found" })
+      ? res
+          .status(200)
+          .json({
+            status: false,
+            msg: "User not found. Invalid Credentials!...",
+          })
       : res.status(200).json({
           status: true,
           msg: "Teacher verified",

@@ -8,9 +8,9 @@ routes.get("/get-students-exams", protect, teacherController.getExamsOfStudent);
 
 routes.get("/get-teacher/:id", protect, teacherController.getTeacher);
 routes.get("/get-teachers", protect, teacherController.getAllTeachers);
-routes.get("/get-students", protect, teacherController.getAllStudents);
+routes.get("/get-students", teacherController.getAllStudents);
 routes.get("/get-students/:id", protect, teacherController.getStudent);
-routes.get("/activities", protect, teacherController.getExams);
+routes.get("/activities", teacherController.getExams);
 routes.get("/activities/:id", protect, teacherController.getExam);
 routes.get("/activities/part2/:id", protect, teacherController.getExam);
 routes.post("/add-teacher", protect, teacherController.regTeacher);

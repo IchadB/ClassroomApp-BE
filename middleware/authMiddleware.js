@@ -1,9 +1,10 @@
 const jwt = require("jsonwebtoken");
-const teachersModel = require("../models/teacher_mongo");
+const teachersModel = require("../models/teacher_mongo.js");
 
 const protect = async (req, res, next) => {
   let token;
   token = req.cookies.jwt;
+
   if (token) {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);

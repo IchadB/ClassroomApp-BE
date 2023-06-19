@@ -3,43 +3,39 @@ const teachersModel = require("../models/teacher_mongo");
 const generateToken = require("../utils/generateToken");
 
 async function loginUser(req, res) {
-  const { username, password } = req.body;
-  if (!username || !password) {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
     return res
       .status(200)
       .json({ status: false, msg: "All field must not be empty" });
   }
 
-  const isStudent = await studentsModel.find({
-    username: username,
-    password: password,
-  });
-  if (!isStudent.length) {
-    const isTeacher = await teachersModel.find({
-      username: username,
-      password: password,
+  const teacher = await teachersModel.findOne({ email });
+  const student = await studentsModel.findOne({ email });
+
+  if (teacher && (await teacher.matchPassword(password))) {
+    generateToken(res, teacher._id);
+    return res.status(201).json({
+      registeredData: teacher,
+      status: true,
+      msg: "Teacher verified",
+      type: "teacher",
     });
-    if (!isTeacher.length) {
-      res.status(200).json({
-        status: false,
-        msg: "User not found. Invalid Credentials!...",
-      });
-    } else {
-      await isTeacher[0].matchPassword(password);
-      generateToken(res, isTeacher._id);
-      res.status(200).json({
-        status: true,
-        msg: "Teacher verified",
-        type: "teacher",
-        registeredData: isTeacher[0],
-      });
-    }
-  } else {
-    res.status(200).json({
+  }
+  if (student && (await student.matchPassword(password))) {
+    generateToken(res, student._id);
+    return res.status(201).json({
+      registeredData: student,
       status: true,
       msg: "Student verified",
       type: "student",
-      registeredData: isStudent[0],
+    });
+  }
+  if (!student || !teacher) {
+    return res.status(200).json({
+      status: false,
+      msg: "User not found. Invalid Credentials!...",
     });
   }
 }

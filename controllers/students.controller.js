@@ -80,7 +80,7 @@ const answeredStudentExams = (req, res) => {
 	const { subject, answer, studentId, examId } = req.body;
 	// console.log(subject, answer, studentId, examId);
 
-	answeredExamModel.find({ subject: subject }).then(async (data) => {
+	answeredExamModel.find({ examId: examId }).then(async (data) => {
 		if (!data.length) {
 			await answeredExamModel.create({
 				subject,
@@ -91,6 +91,11 @@ const answeredStudentExams = (req, res) => {
 			res.status(200).json({
 				status: true,
 				message: "your answers has been sent",
+			});
+		} else {
+			res.status(200).json({
+				status: false,
+				message: "you already submitted you answers",
 			});
 		}
 	});

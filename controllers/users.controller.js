@@ -1,5 +1,6 @@
 const studentsModel = require("../models/student_mongo");
 const teachersModel = require("../models/teacher_mongo");
+const generateToken = require("../utils/generateToken");
 
 async function loginUser(req, res) {
   const { username, password } = req.body;
@@ -18,19 +19,21 @@ async function loginUser(req, res) {
       username: username,
       password: password,
     });
-    !isTeacher.length
-      ? res
-          .status(200)
-          .json({
-            status: false,
-            msg: "User not found. Invalid Credentials!...",
-          })
-      : res.status(200).json({
-          status: true,
-          msg: "Teacher verified",
-          type: "teacher",
-          registeredData: isTeacher[0],
-        });
+    if (!isTeacher.length) {
+      res.status(200).json({
+        status: false,
+        msg: "User not found. Invalid Credentials!...",
+      });
+    } else {
+      await isTeacher[0].matchPassword(password);
+      generateToken(res, isTeacher._id);
+      res.status(200).json({
+        status: true,
+        msg: "Teacher verified",
+        type: "teacher",
+        registeredData: isTeacher[0],
+      });
+    }
   } else {
     res.status(200).json({
       status: true,
@@ -113,6 +116,7 @@ function registerUser(req, res) {
           img,
           password,
         });
+        generateToken(res, user._id);
         res.status(200).json({
           status: true,
           msg: "Teacher registered",
@@ -129,6 +133,10 @@ function registerUser(req, res) {
 }
 
 const logoutUser = (req, res) => {
+  res.cookie("jwt", "", {
+    httpOnly: true,
+    expires: new Date(0),
+  });
   res.status(200).json({ msg: "User Logout Successfully" });
 };
 

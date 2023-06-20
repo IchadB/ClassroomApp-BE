@@ -7,7 +7,7 @@ async function loginUser(req, res) {
 
   if (!email || !password) {
     return res
-      .status(200)
+      .status(400)
       .json({ status: false, msg: "All field must not be empty" });
   }
 
@@ -15,7 +15,7 @@ async function loginUser(req, res) {
   const student = await studentsModel.findOne({ email });
 
   if (teacher && (await teacher.matchPassword(password))) {
-    return res.status(201).json({
+    return res.status(200).json({
       registeredData: teacher,
       status: true,
       msg: "Teacher verified",
@@ -24,8 +24,7 @@ async function loginUser(req, res) {
     });
   }
   if (student && (await student.matchPassword(password))) {
-    // generateToken(res, student._id);
-    return res.status(201).json({
+    return res.status(200).json({
       registeredData: student,
       status: true,
       msg: "Student verified",
@@ -34,7 +33,7 @@ async function loginUser(req, res) {
     });
   }
   if (!student || !teacher) {
-    return res.status(200).json({
+    return res.status(400).json({
       status: false,
       msg: "User not found. Invalid Credentials!...",
     });
@@ -58,12 +57,12 @@ async function registerUser(req, res) {
   } = req.body;
   if (password !== password2) {
     return res
-      .status(200)
+      .status(400)
       .json({ status: false, msg: "Password does not match" });
   }
   if (!type) {
     return res
-      .status(200)
+      .status(400)
       .json({ status: false, msg: "Type must be specified" });
   }
 
@@ -84,12 +83,13 @@ async function registerUser(req, res) {
         img,
         password,
       });
-      generateToken(res, newStudent._id);
-      return res.status(200).json({
+
+      return res.status(201).json({
         status: true,
         message: "Student successfully registered!",
         registeredData: newStudent,
         type: type,
+        token: generateToken(newStudent._id),
       });
     } else if (type === "teacher") {
       const newTeacher = await teachersModel.create({
@@ -104,16 +104,17 @@ async function registerUser(req, res) {
         img,
         password,
       });
-      generateToken(res, newTeacher._id);
-      return res.status(200).json({
+
+      return res.status(201).json({
         status: true,
         message: "Teacher successfully registered!",
         registeredData: newTeacher,
         type: type,
+        token: generateToken(newTeacher._id),
       });
     }
   } else {
-    return res.status(401).json({ status: false, msg: "Email already exist!" });
+    return res.status(400).json({ status: false, msg: "Email already exist!" });
   }
 }
 

@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-const teachersModel = require("../models/teacher_mongo.js");
 
 const protectRoutes = async (req, res, next) => {
   const authHeader = req.headers["authorization"];

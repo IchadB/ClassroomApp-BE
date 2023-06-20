@@ -9,7 +9,6 @@ routes.get(
   protectRoutes,
   teacherController.getExamsOfStudent
 );
-
 routes.get("/get-teacher/:id", protectRoutes, teacherController.getTeacher);
 routes.get("/get-teachers", protectRoutes, teacherController.getAllTeachers);
 routes.get("/get-students", protectRoutes, teacherController.getAllStudents);
@@ -29,7 +28,6 @@ routes.patch(
   protectRoutes,
   teacherController.createExamSecondPart
 );
-
 routes.put(
   "/update-student/:id",
   protectRoutes,

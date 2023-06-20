@@ -16,8 +16,6 @@ routes.get("/get-students/:id", protectRoutes, teacherController.getStudent);
 routes.get("/activities", protectRoutes, teacherController.getExams);
 routes.get("/activities/:id", protectRoutes, teacherController.getExam);
 routes.get("/activities/part2/:id", protectRoutes, teacherController.getExam);
-routes.post("/add-teacher", protectRoutes, teacherController.regTeacher);
-routes.post("/add-student", protectRoutes, teacherController.regStudent);
 routes.post(
   "/create-exam-first-part",
   protectRoutes,

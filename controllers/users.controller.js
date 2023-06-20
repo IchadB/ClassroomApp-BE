@@ -33,9 +33,9 @@ async function loginUser(req, res) {
     });
   }
   if (!student || !teacher) {
-    return res.status(400).json({
+    return res.status(404).json({
       status: false,
-      msg: "User not found. Invalid Credentials!...",
+      msg: "User not found!...",
     });
   }
 }
@@ -83,7 +83,6 @@ async function registerUser(req, res) {
         img,
         password,
       });
-
       return res.status(201).json({
         status: true,
         message: "Student successfully registered!",
@@ -104,7 +103,6 @@ async function registerUser(req, res) {
         img,
         password,
       });
-
       return res.status(201).json({
         status: true,
         message: "Teacher successfully registered!",

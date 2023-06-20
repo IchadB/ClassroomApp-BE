@@ -48,6 +48,7 @@ const studentSchema = new mongoose.Schema({
     default: () => Date.now(),
   },
 });
+
 studentSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     next();
@@ -59,4 +60,5 @@ studentSchema.pre("save", async function (next) {
 studentSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
+
 module.exports = mongoose.model("Students", studentSchema);

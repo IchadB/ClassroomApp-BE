@@ -1,6 +1,6 @@
 const studentsModel = require("../models/student_mongo");
 const teachersModel = require("../models/teacher_mongo");
-const generateToken = require("../utils/generateToken");
+const jwt = require("jsonwebtoken");
 
 async function loginUser(req, res) {
   const { email, password } = req.body;
@@ -15,21 +15,22 @@ async function loginUser(req, res) {
   const student = await studentsModel.findOne({ email });
 
   if (teacher && (await teacher.matchPassword(password))) {
-    generateToken(res, teacher._id);
     return res.status(201).json({
       registeredData: teacher,
       status: true,
       msg: "Teacher verified",
       type: "teacher",
+      token: generateToken(teacher._id),
     });
   }
   if (student && (await student.matchPassword(password))) {
-    generateToken(res, student._id);
+    // generateToken(res, student._id);
     return res.status(201).json({
       registeredData: student,
       status: true,
       msg: "Student verified",
       type: "student",
+      token: generateToken(student._id),
     });
   }
   if (!student || !teacher) {
@@ -122,6 +123,12 @@ const logoutUser = (req, res) => {
     expires: new Date(0),
   });
   res.status(200).json({ msg: "User Logout Successfully" });
+};
+
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: "7d",
+  });
 };
 
 module.exports = {

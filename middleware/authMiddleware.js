@@ -1,25 +1,25 @@
 const jwt = require("jsonwebtoken");
 const teachersModel = require("../models/teacher_mongo.js");
 
-const protect = async (req, res, next) => {
-  let token;
-  token = req.cookies.jwt;
+const protectRoutes = async (req, res, next) => {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
 
-  if (token) {
-    try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = await teachersModel
-        .findById(decoded.userID)
-        .select("-password");
-      next();
-    } catch (error) {
-      res.status(401).json({ status: false, msg: "Invalid token!" });
-    }
-  } else {
-    res.status(401).json({ status: false, msg: "Not authorized!" });
+  if (!token) {
+    return res.sendStatus(401); // Unauthorized
   }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) {
+      console.log(err);
+      return res.sendStatus(403); // Forbidden
+    }
+
+    req.user = user;
+    next();
+  });
 };
 
 module.exports = {
-  protect,
+  protectRoutes,
 };

@@ -4,7 +4,7 @@ const routes = express.Router();
 const { protect } = require("../middleware/authMiddleware");
 const teacherController = require("../controllers/teachers.controller");
 
-routes.get("/get-students-exams", teacherController.getExamsOfStudent);
+routes.get("/get-students-answered-exams", teacherController.getExamsOfStudent);
 
 routes.get("/get-teacher/:id", teacherController.getTeacher);
 routes.get("/get-teachers", teacherController.getAllTeachers);

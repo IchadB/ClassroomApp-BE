@@ -15,28 +15,6 @@ const getAllStudents = (req, res) => {
 const addStudentAttendance = (req, res) => {
   const { attendance, fname, lname, email, comment } = req.body;
 
-<<<<<<< HEAD
-	attendanceModel.find({ email: email }).then((data) => {
-		if (!data.length) {
-			attendanceModel.create({
-				attendance,
-				fname,
-				lname,
-				email,
-				comment,
-			});
-			res.status(200).json({
-				status: true,
-				message: "Your attendance has been sent",
-			});
-		} else {
-			res.status(200).json({
-				status: false,
-				message: "You have already submitted your attendance",
-			});
-		}
-	});
-=======
   attendanceModel.find({ email: email }).then((data) => {
     if (!data.length) {
       attendanceModel.create({
@@ -57,7 +35,6 @@ const addStudentAttendance = (req, res) => {
       });
     }
   });
->>>>>>> da850471cd785d0753d23e070822da97d8089b2b
 };
 
 const getAllAttendanceStudents = (req, res) => {
@@ -113,27 +90,6 @@ const answeredStudentExams = (req, res) => {
   const { subject, answer, studentId, examId } = req.body;
   // console.log(subject, answer, studentId, examId);
 
-<<<<<<< HEAD
-	answeredExamModel.find({ examId: examId }).then(async (data) => {
-		if (!data.length) {
-			await answeredExamModel.create({
-				subject,
-				answer,
-				studentId,
-				examId,
-			});
-			res.status(200).json({
-				status: true,
-				message: "your answers has been sent",
-			});
-		} else {
-			res.status(200).json({
-				status: false,
-				message: "You already submitted you answers",
-			});
-		}
-	});
-=======
   answeredExamModel.find({ examId: examId }).then(async (data) => {
     if (!data.length) {
       await answeredExamModel.create({
@@ -153,7 +109,6 @@ const answeredStudentExams = (req, res) => {
       });
     }
   });
->>>>>>> da850471cd785d0753d23e070822da97d8089b2b
 };
 
 module.exports = {

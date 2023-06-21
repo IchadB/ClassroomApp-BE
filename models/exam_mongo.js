@@ -1,14 +1,5 @@
 const mongoose = require("mongoose");
 
-// const questionsSchema = new mongoose.Schema({
-//   question: String,
-//   choice_a: String,
-//   choice_b: String,
-//   choice_c: String,
-//   choice_d: String,
-//   answer: String,
-// });
-
 const examSchema = new mongoose.Schema({
   subject: {
     type: String,
@@ -25,6 +16,10 @@ const examSchema = new mongoose.Schema({
   examLength: {
     type: Number,
     required: true,
+  },
+  isPublish: {
+    type: Boolean,
+    default: false,
   },
   questions: [
     {

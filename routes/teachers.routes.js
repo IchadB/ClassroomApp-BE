@@ -21,6 +21,7 @@ routes.post(
   protectRoutes,
   teacherController.createExamFirstPart
 );
+routes.patch("/activities/:id", protectRoutes, teacherController.publishExam);
 routes.patch(
   "/create-exam-second-part/:id",
   protectRoutes,
@@ -30,6 +31,11 @@ routes.put(
   "/update-student/:id",
   protectRoutes,
   teacherController.updateStudent
+);
+routes.put(
+  "/update-teacher/:id",
+  protectRoutes,
+  teacherController.updateTeacher
 );
 routes.delete(
   "/delete-student/:id",

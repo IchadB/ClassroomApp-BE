@@ -32,6 +32,38 @@ async function getTeacher(req, res) {
   }
 }
 
+async function updateTeacher(req, res) {
+  const id = req.params.id;
+  const {
+    lname,
+    fname,
+    email,
+    username,
+    contact,
+    age,
+    gender,
+    address,
+    password,
+  } = req.body;
+  if (
+    !fname ||
+    !lname ||
+    !username ||
+    !email ||
+    !contact ||
+    !age ||
+    !gender ||
+    !address ||
+    !password
+  ) {
+    return res
+      .status(400)
+      .json({ status: false, msg: "Please fill out all fields!.." });
+  }
+  await teachersDB.findByIdAndUpdate(id, req.body);
+  return res.status(200).json({ status: true, msg: "Teacher updated!.." });
+}
+
 async function getAllStudents(req, res) {
   const students = await studentDB.find();
   !students.length
@@ -69,6 +101,22 @@ async function createExamFirstPart(req, res) {
 async function createExamSecondPart(req, res) {
   const id = req.params.id;
 
+  const newExam = req.body;
+  newExam.map((exam, index) => {
+    if (
+      !exam.question ||
+      !exam.choice_a ||
+      !exam.choice_b ||
+      !exam.choice_c ||
+      !exam.choice_d ||
+      !exam.answer
+    ) {
+      return res
+        .status(400)
+        .json({ status: false, msg: "Please fill out all fields!.." });
+    }
+  });
+
   if (ObjectId.isValid(id)) {
     const exam = await examDB.updateOne({ _id: id }, { questions: req.body });
     exam.acknowledged
@@ -81,8 +129,15 @@ async function createExamSecondPart(req, res) {
   }
 }
 
+async function publishExam(req, res) {
+  const id = req.params.id;
+
+  const exam = await examDB.updateOne({ _id: id }, req.body);
+  return res.status(200).json({ status: true, msg: "Exam now published" });
+}
+
 async function getExams(req, res) {
-  const exams = await examDB.find();
+  const exams = await examDB.find().sort({ createdAt: -1 });
   !exams.length
     ? res.status(204).json({ status: false, msg: "No exams yet!" })
     : res.status(200).json(exams);
@@ -166,7 +221,9 @@ module.exports = {
   createExamSecondPart,
   getExams,
   getExam,
+  publishExam,
   updateStudent,
+  updateTeacher,
   deleteStudent,
   deleteExam,
 };

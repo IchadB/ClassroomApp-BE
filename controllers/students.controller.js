@@ -26,12 +26,12 @@ const addStudentAttendance = (req, res) => {
 			});
 			res.status(200).json({
 				status: true,
-				message: "you attendance has been sent",
+				message: "Your attendance has been sent",
 			});
 		} else {
 			res.status(200).json({
 				status: false,
-				message: "you have already submitted your response",
+				message: "You have already submitted your attendance",
 			});
 		}
 	});
@@ -95,7 +95,7 @@ const answeredStudentExams = (req, res) => {
 		} else {
 			res.status(200).json({
 				status: false,
-				message: "you already submitted you answers",
+				message: "You already submitted you answers",
 			});
 		}
 	});

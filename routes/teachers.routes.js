@@ -12,6 +12,11 @@ routes.get(
 routes.get("/get-teacher/:id", protectRoutes, teacherController.getTeacher);
 routes.get("/get-teachers", protectRoutes, teacherController.getAllTeachers);
 routes.get("/get-students", protectRoutes, teacherController.getAllStudents);
+routes.get(
+  "/get-students-attendance",
+  protectRoutes,
+  teacherController.getAttendances
+);
 routes.get("/get-students/:id", protectRoutes, teacherController.getStudent);
 routes.get("/activities", protectRoutes, teacherController.getExams);
 routes.get("/activities/:id", protectRoutes, teacherController.getExam);

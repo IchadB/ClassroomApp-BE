@@ -69,60 +69,51 @@ async function registerUser(req, res) {
 
   const teacher = await teachersModel.findOne({ email });
   const student = await studentsModel.findOne({ email });
-  try {
-    if (!teacher && !student) {
-      if (type === "student") {
-        const newStudent = await studentsModel.create({
-          fname,
-          lname,
-          username,
-          contact,
-          email,
-          age,
-          gender,
-          address,
-          img,
-          password,
-        });
-        return res.status(201).json({
-          status: true,
-          message: "Student successfully registered!",
-          registeredData: newStudent,
-          type: type,
-          token: generateToken(newStudent._id),
-        });
-      } else if (type === "teacher") {
-        const newTeacher = await teachersModel.create({
-          fname,
-          lname,
-          username,
-          contact,
-          email,
-          age,
-          gender,
-          address,
-          img,
-          password,
-        });
-        return res.status(201).json({
-          status: true,
-          message: "Teacher successfully registered!",
-          registeredData: newTeacher,
-          type: type,
-          token: generateToken(newTeacher._id),
-        });
-      }
-    } else {
-      return res
-        .status(400)
-        .json({ status: false, msg: "Email already exist!" });
-    }
-  } catch (error) {
-    res
-      .status(404)
-      .json({
-        msg: "Email must contain atleast 10 characters, password is atleast 6...",
+
+  if (!teacher && !student) {
+    if (type === "student") {
+      const newStudent = await studentsModel.create({
+        fname,
+        lname,
+        username,
+        contact,
+        email,
+        age,
+        gender,
+        address,
+        img,
+        password,
       });
+      return res.status(201).json({
+        status: true,
+        message: "Student successfully registered!",
+        registeredData: newStudent,
+        type: type,
+        token: generateToken(newStudent._id),
+      });
+    } else if (type === "teacher") {
+      const newTeacher = await teachersModel.create({
+        fname,
+        lname,
+        username,
+        contact,
+        email,
+        age,
+        gender,
+        address,
+        img,
+        password,
+      });
+      return res.status(201).json({
+        status: true,
+        message: "Teacher successfully registered!",
+        registeredData: newTeacher,
+        type: type,
+        token: generateToken(newTeacher._id),
+      });
+    }
+  } else {
+    return res.status(400).json({ status: false, msg: "Email already exist!" });
   }
 }
 

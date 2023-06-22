@@ -13,30 +13,35 @@ async function loginUser(req, res) {
 
   const teacher = await teachersModel.findOne({ email });
   const student = await studentsModel.findOne({ email });
-
-  if (teacher && (await teacher.matchPassword(password))) {
-    return res.status(200).json({
-      registeredData: teacher,
-      status: true,
-      msg: "Teacher verified",
-      type: "teacher",
-      token: generateToken(teacher._id),
-    });
-  }
-  if (student && (await student.matchPassword(password))) {
-    return res.status(200).json({
-      registeredData: student,
-      status: true,
-      msg: "Student verified",
-      type: "student",
-      token: generateToken(student._id),
-    });
-  }
-  if (!student || !teacher) {
-    return res.status(404).json({
-      status: false,
-      msg: "User not found!...",
-    });
+  try {
+    if (teacher && (await teacher.matchPassword(password))) {
+      return res.status(200).json({
+        registeredData: teacher,
+        status: true,
+        msg: "Teacher verified",
+        type: "teacher",
+        token: generateToken(teacher._id),
+      });
+    }
+    if (student && (await student.matchPassword(password))) {
+      return res.status(200).json({
+        registeredData: student,
+        status: true,
+        msg: "Student verified",
+        type: "student",
+        token: generateToken(student._id),
+      });
+    }
+    if (!student || !teacher) {
+      return res.status(404).json({
+        status: false,
+        msg: "User not found!...",
+      });
+    }
+  } catch (error) {
+    res
+      .status(400)
+      .json({ status: false, msg: "There seems a problem loggin in" });
   }
 }
 

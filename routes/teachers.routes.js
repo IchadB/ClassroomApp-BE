@@ -5,7 +5,7 @@ const { protectRoutes } = require("../middleware/authMiddleware");
 const teacherController = require("../controllers/teachers.controller");
 
 routes.get(
-  "/get-students-answered-exams",
+  "/get-students-answered-exams/:id",
   protectRoutes,
   teacherController.getExamsOfStudent
 );

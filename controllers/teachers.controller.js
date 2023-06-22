@@ -7,14 +7,15 @@ const { ObjectId } = require("bson");
 
 //get answered exams of student by Ferdie
 async function getExamsOfStudent(req, res) {
-  const answeredExams = await answeredExamDB.find();
+  const id = req.params.id;
+  const answeredExams = await answeredExamDB.find({ examId: id });
   !answeredExams
     ? res.status(204).json({ status: false, msg: "No exams yet" })
     : res.status(200).json(answeredExams);
 }
 
 async function getAttendances(req, res) {
-  const attendance = await studentAttendanceDB.find();
+  const attendance = await studentAttendanceDB.find().sort({ createdAt: -1 });
   !attendance
     ? res.status(204).json({ status: false, msg: "Nothing to show yet!" })
     : res.status(200).json(attendance);
@@ -79,12 +80,11 @@ async function getAllStudents(req, res) {
     : res.status(200).json(students);
 }
 
-function getStudent(req, res) {
-  // const id = Number(req.params.id);
-  // const getStudent = studentsModel.find((student) => student.id === id);
-  // getStudent
-  //   ? res.status(200).json(getStudent)
-  //   : res.status(404).json({ msg: "Sudent does not exist" });
+async function getStudent(req, res) {
+  const student = await studentDB.findById();
+  student
+    ? res.status(200).json(student)
+    : res.status(400).json({ status: false, msg: "Student not found!.." });
 }
 
 async function createExamFirstPart(req, res) {

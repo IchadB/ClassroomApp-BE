@@ -6,10 +6,12 @@ const teacherSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
+    minLength: 10,
   },
   password: {
     type: String,
     required: true,
+    minLength: 6,
   },
   lname: {
     type: String,

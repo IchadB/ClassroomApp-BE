@@ -13,19 +13,22 @@ const getAllStudents = (req, res) => {
 };
 
 const addStudentAttendance = async (req, res) => {
-	const { attendance, fname, lname, email, comment } = req.body;
-
-	await attendanceModel.create({
-		attendance,
-		fname,
-		lname,
-		email,
-		comment,
-	});
-	res.status(200).json({
+	await attendanceModel.create(req.body);
+	return res.status(200).json({
 		status: true,
-		message: 'you attendance has been sent',
+		message: 'Attendance has been sent',
 	});
+	// const { attendance, fname, lname, email, comment } = req.body;
+	// attendanceModel.find().then((data) => {
+	//   if(!data.length){
+	//  create({
+	// 	attendance,
+	// 	fname,
+	// 	lname,
+	// 	email,
+	// 	comment
+	//   })
+	// });
 };
 
 const getAllAttendanceStudents = (req, res) => {

@@ -32,6 +32,11 @@ const addStudentAttendance = (req, res) => {
 				status: true,
 				message: 'Attendance has been sent',
 			});
+		} else {
+			res.status(200).json({
+				status: false,
+				message: 'Your attendance has already been sent',
+			});
 		}
 	});
 };

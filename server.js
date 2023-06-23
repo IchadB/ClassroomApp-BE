@@ -18,11 +18,6 @@ app.use(
   cors({
     origin: "https://classroom-app-fe.vercel.app",
     credentials: true,
-    allowedHeaders: [
-      "Content-Type",
-      "Authorization",
-      "Access-Control-Allow-Credentials",
-    ],
   })
 );
 

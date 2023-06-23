@@ -118,6 +118,9 @@ async function registerUser(req, res) {
 }
 
 const logoutUser = (req, res) => {
+  res.cookie("jwt", "", {
+    expires: new Date(0),
+  });
   res.status(200).json({ msg: "User Logout Successfully" });
 };
 

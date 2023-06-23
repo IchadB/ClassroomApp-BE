@@ -12,21 +12,19 @@ const getAllStudents = (req, res) => {
 	});
 };
 
-const addStudentAttendance = (req, res) => {
+const addStudentAttendance = async (req, res) => {
 	const { attendance, fname, lname, email, comment } = req.body;
 
-	attendanceModel.find({ email: email }).then(() => {
-		attendanceModel.create({
-			attendance,
-			fname,
-			lname,
-			email,
-			comment,
-		});
-		res.status(200).json({
-			status: true,
-			message: 'you attendance has been sent',
-		});
+	await attendanceModel.create({
+		attendance,
+		fname,
+		lname,
+		email,
+		comment,
+	});
+	res.status(200).json({
+		status: true,
+		message: 'you attendance has been sent',
 	});
 };
 

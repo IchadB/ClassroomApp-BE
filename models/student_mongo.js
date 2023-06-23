@@ -14,7 +14,6 @@ const studentSchema = new mongoose.Schema({
     type: String,
     unique: true,
     required: true,
-    minLength: 10,
   },
   username: {
     type: String,
@@ -43,7 +42,6 @@ const studentSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    minLength: 6,
   },
   joinedDate: {
     type: Date,

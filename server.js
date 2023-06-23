@@ -16,7 +16,7 @@ connectDB();
 
 app.use(
   cors({
-    origin: "https://classroom-app-fe.vercel.app",
+    origin: "http://localhost:3000",
     credentials: true,
   })
 );

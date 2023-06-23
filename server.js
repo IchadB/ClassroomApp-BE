@@ -14,26 +14,12 @@ const usersRouter = require("./routes/users.routes");
 dotenv.config();
 connectDB();
 
-// app.use(
-//   cors({
-//     origin: "https://classroom-app-fe.vercel.app",
-//     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-//     credentials: true,
-//   })
-// );
-app.options("/users/login", (req, res) => {
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Content-Type, Authorization, Access-Control-Allow-Credentials"
-  );
-  res.header(
-    "Access-Control-Allow-Origin",
-    "https://classroom-app-fe.vercel.app"
-  );
-  res.header("Access-Control-Allow-Credentials", "true");
-  res.status(200).send();
-});
+app.use(
+  cors({
+    origin: "https://classroom-app-fe.vercel.app",
+    credentials: true,
+  })
+);
 
 app.use(cookieParser());
 app.use(bodyParser.json({ limit: "50mb" }));

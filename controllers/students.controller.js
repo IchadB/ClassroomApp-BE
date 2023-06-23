@@ -13,13 +13,8 @@ const getAllStudents = (req, res) => {
 };
 
 const addStudentAttendance = (req, res) => {
-	// await attendanceModel.create(req.body);
-	// return res.status(200).json({
-	// 	status: true,
-	// 	message: 'Attendance has been sent',
-	// });
 	const { attendance, fname, lname, email, comment } = req.body;
-	attendanceModel.find({ attendance: attendance }).then((data) => {
+	attendanceModel.find({ comment: comment }).then((data) => {
 		if (!data.length) {
 			attendanceModel.create({
 				attendance,
@@ -92,7 +87,6 @@ const getStudentExamById = async (req, res) => {
 
 const answeredStudentExams = (req, res) => {
 	const { subject, answer, studentId, examId } = req.body;
-	// console.log(subject, answer, studentId, examId);
 
 	answeredExamModel.find({ examId: examId }).then(async (data) => {
 		if (!data.length) {

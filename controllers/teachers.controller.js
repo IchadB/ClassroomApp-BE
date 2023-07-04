@@ -75,6 +75,7 @@ async function updateTeacher(req, res) {
 
 async function getAllStudents(req, res) {
   const students = await studentDB.find();
+  console.log(students.length);
   !students.length
     ? res.status(204).json({ status: false, msg: "No students registerd yet!" })
     : res.status(200).json(students);
